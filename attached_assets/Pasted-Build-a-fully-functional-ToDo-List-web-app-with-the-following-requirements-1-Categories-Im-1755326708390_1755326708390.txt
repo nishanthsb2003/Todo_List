@@ -1,0 +1,78 @@
+Build a fully functional ToDo List web app with the following requirements:
+
+1. Categories: 
+   - Important & Urgent
+   - Not Important & Urgent
+   - Important & Not Urgent
+   - Not Important & Not Urgent
+
+2. Preloaded tasks:
+Important & Urgent:
+- TEE Foundation
+- TEE XTREME Task Plan & Conduct Program
+- NPTEL Course: AI, Japanese, DSA, Python
+- AI Accelerate Course
+- 30 Days Python
+- Microdegree Course
+- Ediglobe Course
+- Chatbot Project workshop completion
+- NS Engineer Sathi update channel & release content
+- 15 Days Blockchain workshop (free)
+- Data Analytics Course Complete (IBM)
+
+Not Important & Urgent:
+- UI Path Ambassador Check
+- Drawing portrait for Nov 1st
+- Install Story copy & J.V.
+- Discuss on Association updates
+- Build Application (Disease)
+
+Important & Not Urgent:
+- Setup LinkedIn, GitHub profile
+- Prepare DSA & Solve Leetcode
+- Practice GD, Email Writing
+- Learn DSA, SQL, OOPS, Array, List, Queues, Stack, Class, Loops
+- Company prepare
+- Get Certificates
+- AI & Deep Learning learn, notes
+- Search Internship
+- Major Project learn & build
+- Startup - Discuss, Approaches, Business card, etc.
+
+Not Important & Not Urgent:
+- Company prepare
+- 3830 rupees pending (TV)
+- 80 - Saleem
+- 1k - Prathima
+- 200 - Brijesh
+- 100 - Harshit
+- 100 - Cham
+
+3. Features:
+- Display tasks grouped by category in card layout
+- Click a task to toggle as "done" (strikethrough + grey)
+- Save progress in localStorage
+- Responsive, clean UI with rounded corners + shadows
+- Mobile friendly
+
+4. Deliverables:
+- Generate a complete index.html file (with CSS + JS included inline).
+- Initialize a Git repo, commit the file, and push it to GitHub repository called `mindmap-todo`.
+- Enable GitHub Pages for the repo so it is publicly accessible at:
+  `https://YOUR_USERNAME.github.io/mindmap-todo/`
+
+5. Steps:
+- Write the full HTML code.
+- Provide the exact git commands to run:
+  git init
+  git add .
+  git commit -m "Initial commit: Mind Map ToDo App"
+  git branch -M main
+  git remote add origin https://github.com/YOUR_USERNAME/mindmap-todo.git
+  git push -u origin main
+- Instruct how to enable GitHub Pages (Settings → Pages → Deploy from branch → main).
+
+Output:
+- Full working code for index.html
+- GitHub push instructions
+- Final published URL format
