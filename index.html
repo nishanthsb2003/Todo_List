@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mind Map ToDo - Eisenhower Matrix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .category-icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .urgent-important .category-icon {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+        }
+
+        .urgent-not-important .category-icon {
+            background: linear-gradient(45deg, #ffa726, #ff9800);
+        }
+
+        .not-urgent-important .category-icon {
+            background: linear-gradient(45deg, #42a5f5, #2196f3);
+        }
+
+        .not-urgent-not-important .category-icon {
+            background: linear-gradient(45deg, #66bb6a, #4caf50);
+        }
+
+        .category-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            flex: 1;
+        }
+
+        .task-count {
+            background: #f5f5f5;
+            color: #666;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .task-list {
+            list-style: none;
+        }
+
+        .task-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-item:hover {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .task-checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .task-text {
+            flex: 1;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            transition: all 0.3s ease;
+        }
+
+        .task-item.completed .task-checkbox {
+            background: linear-gradient(45deg, #4caf50, #66bb6a);
+            border-color: #4caf50;
+        }
+
+        .task-item.completed .task-checkbox::after {
+            content: '✓';
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+            color: #999;
+            opacity: 0.6;
+        }
+
+        .stats {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            margin-top: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .matrix {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .category-card {
+                padding: 15px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .category-title {
+                font-size: 1rem;
+            }
+
+            .task-text {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Animation for new completions */
+        @keyframes taskComplete {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .task-item.just-completed {
+            animation: taskComplete 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Mind Map ToDo</h1>
+            <p>Organize your tasks using the Eisenhower Matrix</p>
+        </div>
+
+        <div class="matrix" id="matrix">
+            <!-- Categories will be dynamically generated here -->
+        </div>
+
+        <div class="stats">
+            <h3>Progress Overview</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalTasks">0</div>
+                    <div class="stat-label">Total Tasks</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="completedTasks">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="pendingTasks">0</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="progressPercent">0%</div>
+                    <div class="stat-label">Progress</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Task data structure with preloaded tasks
+        const taskData = {
+            'urgent-important': {
+                title: 'Important & Urgent',
+                icon: '🔥',
+                cssClass: 'urgent-important',
+                tasks: [
+                    'TEE Foundation',
+                    'TEE XTREME Task Plan & Conduct Program',
+                    'NPTEL Course: AI, Japanese, DSA, Python',
+                    'AI Accelerate Course',
+                    '30 Days Python',
+                    'Microdegree Course',
+                    'Ediglobe Course',
+                    'Chatbot Project workshop completion',
+                    'NS Engineer Sathi update channel & release content',
+                    '15 Days Blockchain workshop (free)',
+                    'Data Analytics Course Complete (IBM)'
+                ]
+            },
+            'urgent-not-important': {
+                title: 'Not Important & Urgent',
+                icon: '⚡',
+                cssClass: 'urgent-not-important',
+                tasks: [
+                    'UI Path Ambassador Check',
+                    'Drawing portrait for Nov 1st',
+                    'Install Story copy & J.V.',
+                    'Discuss on Association updates',
+                    'Build Application (Disease)'
+                ]
+            },
+            'not-urgent-important': {
+                title: 'Important & Not Urgent',
+                icon: '💡',
+                cssClass: 'not-urgent-important',
+                tasks: [
+                    'Setup LinkedIn, GitHub profile',
+                    'Prepare DSA & Solve Leetcode',
+                    'Practice GD, Email Writing',
+                    'Learn DSA, SQL, OOPS, Array, List, Queues, Stack, Class, Loops',
+                    'Company prepare',
+                    'Get Certificates',
+                    'AI & Deep Learning learn, notes',
+                    'Search Internship',
+                    'Major Project learn & build',
+                    'Startup - Discuss, Approaches, Business card, etc.'
+                ]
+            },
+            'not-urgent-not-important': {
+                title: 'Not Important & Not Urgent',
+                icon: '🎯',
+                cssClass: 'not-urgent-not-important',
+                tasks: [
+                    'Company prepare',
+                    '3830 rupees pending (TV)',
+                    '80 - Saleem',
+                    '1k - Prathima',
+                    '200 - Brijesh',
+                    '100 - Harshit',
+                    '100 - Cham'
+                ]
+            }
+        };
+
+        // State management
+        let taskStates = {};
+
+        // Initialize the application
+        function init() {
+            loadTaskStates();
+            renderMatrix();
+            updateStats();
+        }
+
+        // Load task states from localStorage
+        function loadTaskStates() {
+            const saved = localStorage.getItem('mindmap-todo-states');
+            if (saved) {
+                try {
+                    taskStates = JSON.parse(saved);
+                } catch (e) {
+                    console.warn('Failed to parse saved task states:', e);
+                    taskStates = {};
+                }
+            }
+        }
+
+        // Save task states to localStorage
+        function saveTaskStates() {
+            try {
+                localStorage.setItem('mindmap-todo-states', JSON.stringify(taskStates));
+            } catch (e) {
+                console.warn('Failed to save task states:', e);
+            }
+        }
+
+        // Generate unique task ID
+        function getTaskId(category, taskText) {
+            return `${category}-${taskText.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
+        }
+
+        // Toggle task completion
+        function toggleTask(category, taskText, element) {
+            const taskId = getTaskId(category, taskText);
+            taskStates[taskId] = !taskStates[taskId];
+            
+            // Add animation class for completion
+            if (taskStates[taskId]) {
+                element.classList.add('just-completed');
+                setTimeout(() => element.classList.remove('just-completed'), 500);
+            }
+            
+            // Update UI
+            element.classList.toggle('completed', taskStates[taskId]);
+            
+            // Save state and update stats
+            saveTaskStates();
+            updateStats();
+        }
+
+        // Render the matrix
+        function renderMatrix() {
+            const matrix = document.getElementById('matrix');
+            matrix.innerHTML = '';
+
+            Object.entries(taskData).forEach(([category, data]) => {
+                const card = document.createElement('div');
+                card.className = `category-card ${data.cssClass}`;
+
+                const completedCount = data.tasks.filter(task => 
+                    taskStates[getTaskId(category, task)]
+                ).length;
+
+                card.innerHTML = `
+                    <div class="category-header">
+                        <div class="category-icon">${data.icon}</div>
+                        <div class="category-title">${data.title}</div>
+                        <div class="task-count">${completedCount}/${data.tasks.length}</div>
+                    </div>
+                    <ul class="task-list">
+                        ${data.tasks.map(task => {
+                            const taskId = getTaskId(category, task);
+                            const isCompleted = taskStates[taskId] || false;
+                            return `
+                                <li class="task-item ${isCompleted ? 'completed' : ''}" 
+                                    onclick="toggleTask('${category}', '${task.replace(/'/g, "\\'")}', this)">
+                                    <div class="task-checkbox"></div>
+                                    <div class="task-text">${task}</div>
+                                </li>
+                            `;
+                        }).join('')}
+                    </ul>
+                `;
+
+                matrix.appendChild(card);
+            });
+        }
+
+        // Update statistics
+        function updateStats() {
+            let totalTasks = 0;
+            let completedTasks = 0;
+
+            Object.entries(taskData).forEach(([category, data]) => {
+                totalTasks += data.tasks.length;
+                completedTasks += data.tasks.filter(task => 
+                    taskStates[getTaskId(category, task)]
+                ).length;
+            });
+
+            const pendingTasks = totalTasks - completedTasks;
+            const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+            // Update DOM elements
+            document.getElementById('totalTasks').textContent = totalTasks;
+            document.getElementById('completedTasks').textContent = completedTasks;
+            document.getElementById('pendingTasks').textContent = pendingTasks;
+            document.getElementById('progressPercent').textContent = `${progressPercent}%`;
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Handle page visibility change to save state
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                saveTaskStates();
+            }
+        });
+
+        // Save state before page unload
+        window.addEventListener('beforeunload', saveTaskStates);
+    </script>
+</body>
+</html>
